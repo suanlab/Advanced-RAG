@@ -1,6 +1,6 @@
 # Advanced RAG 엔지니어링 구축 전략
 
-> GK Agentic AI 엔지니어링 과정 · 8H 집중 과목 · **이수안 교수 (이수안컴퓨터연구소 / SuanLab)**
+> 신한카드 Agentic AI 엔지니어링 과정 · 8H 집중 과목 · **이수안 교수 (이수안컴퓨터연구소 / SuanLab)**
 >
 > RAG를 **"감으로 고치는 것"에서 "측정으로 고치는 것"** 으로 — 평가·개선 루프부터 Hybrid·Reranking·Graph RAG·Agentic RAG·운영까지, 모든 LLM 단계는 **Claude API** 기반으로 직접 구현합니다. 데이터는 전부 합성·내장(민감/저작권 데이터 없음).
 
@@ -9,7 +9,7 @@
 - **모듈 1 — RAG 평가 및 개선하기** — [슬라이드 열기](https://suanlab.github.io/Advanced-RAG/slides/module1-rag-evaluation.html)
 - **모듈 2 — Advanced RAG & Graph RAG** — [슬라이드 열기](https://suanlab.github.io/Advanced-RAG/slides/module2-advanced-graph-rag.html)
 
-> 발표 뷰어: `←/→`·Space 이동 · `o` 목차 · `n` 발표자 노트 · `f` 풀스크린 · Print(PDF 저장). *(Pages 배포에 최초 1~2분 소요될 수 있습니다.)*
+> 발표 뷰어: `←/→`·Space 이동 · `o` 목차 · `n` 발표자 노트 · `f` 풀스크린 · Print(PDF 저장).
 
 ## 🧪 Colab 실습 (8개 통합 노트북)
 
