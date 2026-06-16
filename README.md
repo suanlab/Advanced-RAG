@@ -26,16 +26,11 @@
 | 7 | lab7 통합 Capstone | 베이스라인→Contextual→Hybrid→Rerank 누적 개선을 수치로 입증 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/suanlab/Advanced-RAG/blob/main/colab/lab7%20%ED%86%B5%ED%95%A9%20Capstone.ipynb) |
 | 8 | lab8 RAG 운영 모니터링 | 골든셋 회귀·버전별 점수 drift 추적·비용 대시보드 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/suanlab/Advanced-RAG/blob/main/colab/lab8%20RAG%20%EC%9A%B4%EC%98%81%20%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81.ipynb) |
 
-## 📋 발표자 노트
-
-- [모듈 1](notes/module1-presenter-notes.md) · [모듈 2](notes/module2-presenter-notes.md)
-
 ## 📂 구성
 
 ```
 slides/      HTML 슬라이드 2덱
 colab/       Colab 실습 노트북 8개
-notes/       슬라이드별 발표자 노트
 ```
 
 ## ℹ️ 안내
