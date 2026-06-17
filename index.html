@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Advanced RAG 엔지니어링 구축 전략 — Claude API 실습 강좌 | SuanLab</title>
+<meta name="description" content="신한카드 Agentic AI 엔지니어링 과정 — RAG 평가·Hybrid·Reranking·Graph RAG·Agentic RAG를 Claude API로 구현하는 8H 집중 강좌. 슬라이드 2덱 + Colab 실습 8종.">
+<meta property="og:title" content="Advanced RAG 엔지니어링 구축 전략">
+<meta property="og:description" content="이론 슬라이드 + Colab 실습 8종을 한 페이지에서. 평가·Hybrid·Reranking·Graph RAG·Agentic RAG.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/logo_icon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--navy-dk:#081A47;--navy:#0E2A6B;--navy-md:#163A8E;--blue:#2E5AAE;--blue-md:#3F73C7;--blue-lt:#7DA4E0;
+--sky:#B8CCE8;--ice:#E4ECF7;--bg:#F4F7FB;--white:#fff;--ink:#1A1A1A;--gray:#5A6677;--gray-lt:#C9D2DC;--line:#E4ECF7;--good:#2C6F5F;--amber:#B96A3B;}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Inter','Noto Sans KR',-apple-system,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(1200px 500px at 80% -10%,#1d3f86 0%,transparent 60%),linear-gradient(135deg,var(--navy-dk) 0%,var(--navy) 55%,var(--navy-md) 100%);padding:72px 0 84px}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--blue-lt),var(--blue-md),var(--sky))}
+.hero-logo{display:flex;align-items:center;gap:14px;margin-bottom:28px}.hero-logo img{width:46px;height:46px;filter:brightness(0) invert(1)}.hero-logo .brand{font-size:22px;font-weight:800;letter-spacing:-.5px}
+.hero-kicker{display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sky);border:1px solid rgba(184,204,232,.35);border-radius:999px;padding:6px 16px;margin-bottom:22px}
+.hero h1{font-size:clamp(38px,6vw,66px);font-weight:800;line-height:1.05;letter-spacing:-1.5px;margin-bottom:18px}
+.hero h1 .grad{background:linear-gradient(90deg,#fff,var(--sky));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p.sub{font-size:clamp(17px,2.4vw,21px);color:var(--sky);font-weight:400;max-width:720px;margin-bottom:14px}
+.hero p.meta{font-size:14px;color:rgba(255,255,255,.62)}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+.btn{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:15px;padding:13px 24px;border-radius:10px;transition:.18s;border:1px solid transparent;cursor:pointer}
+.btn-primary{background:#fff;color:var(--navy)}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.25)}
+.btn-ghost{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.3)}.btn-ghost:hover{background:rgba(255,255,255,.16)}
+section{padding:64px 0}.sec-head{margin-bottom:34px}
+.sec-head .eyebrow{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue)}
+.sec-head h2{font-size:clamp(26px,4vw,36px);font-weight:800;color:var(--navy);letter-spacing:-.8px;margin-top:8px}
+.sec-head p{color:var(--gray);margin-top:8px;font-size:16px;max-width:720px}
+.slides-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.deck{display:flex;flex-direction:column;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:0 12px 40px rgba(8,26,71,.10);transition:.18s}
+.deck:hover{transform:translateY(-3px);box-shadow:0 18px 48px rgba(8,26,71,.16);border-color:var(--blue-lt)}
+.deck-top{position:relative;color:#fff;padding:30px 30px 26px;display:flex;align-items:flex-end;justify-content:space-between;
+background:radial-gradient(600px 240px at 75% 0%,#27407a 0%,transparent 60%),linear-gradient(135deg,var(--navy) 0%,var(--blue) 140%)}
+.deck-top .mod{font-size:12px;font-weight:700;letter-spacing:3px;color:var(--sky)}
+.deck-top .cnt{font-size:48px;font-weight:800;line-height:.9;letter-spacing:-2px}.deck-top .cnt small{font-size:15px;font-weight:600;color:var(--sky);margin-left:4px;letter-spacing:0}
+.deck-body{padding:24px 28px 26px;display:flex;flex-direction:column;flex:1}
+.deck-body h3{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.5px;margin-bottom:8px}
+.deck-body p{color:var(--gray);font-size:14.5px;margin-bottom:16px;flex:1}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.tag{font-size:12px;font-weight:600;color:var(--navy);background:var(--ice);border:1px solid var(--gray-lt);border-radius:7px;padding:4px 10px}
+.deck .open{font-weight:700;color:#fff;background:var(--navy);border-radius:9px;padding:11px 18px;width:fit-content;font-size:14px;transition:.15s}
+.deck:hover .open{background:var(--blue)}
+.nb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.nb{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 26px 22px;display:flex;flex-direction:column;transition:.18s;position:relative;overflow:hidden}
+.nb::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--accent,var(--blue))}
+.nb:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(8,26,71,.12);border-color:var(--blue-lt)}
+.nb .num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:#fff;background:var(--accent,var(--blue));width:fit-content;padding:3px 10px;border-radius:6px;letter-spacing:1px}
+.nb h3{font-size:19px;font-weight:700;color:var(--navy);margin:14px 0 6px;letter-spacing:-.4px}
+.nb p.desc{font-size:14px;color:var(--gray);flex:1;margin-bottom:18px}
+.nb .acts{display:flex;gap:10px;flex-wrap:wrap}
+.colab{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--navy);background:#fff;border:1.5px solid var(--amber);border-radius:8px;padding:8px 13px;transition:.15s}
+.colab:hover{background:#FFF6EC}.colab .ico{width:18px;height:18px;display:block}
+.ghv{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;color:var(--gray);border:1.5px solid var(--gray-lt);border-radius:8px;padding:8px 13px;transition:.15s}
+.ghv:hover{border-color:var(--navy);color:var(--navy)}
+.how{background:#fff;border:1px solid var(--line);border-radius:16px;padding:34px 34px 30px}
+.how ol{list-style:none;counter-reset:s;display:grid;gap:18px}
+.how li{counter-increment:s;display:flex;gap:16px;align-items:flex-start}
+.how li::before{content:counter(s);flex:none;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center}
+.how li b{color:var(--navy)}
+.how code{font-family:'JetBrains Mono',monospace;font-size:.9em;background:var(--ice);color:var(--navy);padding:1px 6px;border-radius:5px;border:1px solid var(--gray-lt)}
+footer{background:var(--navy-dk);color:rgba(255,255,255,.75);padding:42px 0;margin-top:24px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+footer .brand{display:flex;align-items:center;gap:12px;color:#fff;font-weight:700}footer .brand img{width:30px;height:30px;filter:brightness(0) invert(1)}
+footer a{color:var(--sky)}footer .small{font-size:13px}
+@media(max-width:760px){.slides-grid{grid-template-columns:1fr}.nb-grid{grid-template-columns:1fr}section{padding:48px 0}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-logo"><img src="assets/logo_icon.svg" alt="SuanLab"><span class="brand">SuanLab</span></div>
+    <span class="hero-kicker">신한카드 Agentic AI 엔지니어링 과정 · 8H</span>
+    <h1>Advanced RAG<br><span class="grad">엔지니어링 구축 전략</span></h1>
+    <p class="sub">RAG를 <b>“감으로 고치는 것”에서 “측정으로 고치는 것”</b>으로 — 평가·개선 루프부터 Hybrid·Reranking·Graph RAG·Agentic RAG·운영까지 모두 Claude API로 직접 구현합니다.</p>
+    <p class="meta">모듈 1 RAG 평가 → 모듈 2 Advanced &amp; Graph RAG · 슬라이드 2덱 · Colab 실습 8종 · 이수안 교수 (이수안컴퓨터연구소)</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#slides">📊 강의 슬라이드 보기</a>
+      <a class="btn btn-ghost" href="#notebooks">💻 Colab 실습 바로가기</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="slides">
+    <div class="sec-head">
+      <div class="eyebrow">Theory · 이론</div>
+      <h2>강의 슬라이드</h2>
+      <p>모듈별 단일 HTML 덱. 목차(O)·발표 모드(F)·발표자 노트(N)·다크 모드·인쇄(PDF)를 지원하며, 인터넷 없이도 열립니다.</p>
+    </div>
+    <div class="slides-grid">
+    <a class="deck" href="slides/module1-rag-evaluation.html">
+      <div class="deck-top"><span class="mod">MODULE 1</span><span class="cnt">83<small>장</small></span></div>
+      <div class="deck-body">
+        <h3>RAG 평가 및 개선하기</h3>
+        <p>측정 없이는 개선도 회귀 방지도 없다 — LLM-as-a-judge·검색/생성 지표·평가→개선 루프, RAG 보안까지.</p>
+        <div class="tags"><span class="tag">LLM-as-a-judge</span><span class="tag">P@k·MRR·nDCG</span><span class="tag">Faithfulness·RAGAS</span><span class="tag">RAG 보안</span></div>
+        <span class="open">슬라이드 열기 →</span>
+      </div>
+    </a>
+    <a class="deck" href="slides/module2-advanced-graph-rag.html">
+      <div class="deck-top"><span class="mod">MODULE 2</span><span class="cnt">77<small>장</small></span></div>
+      <div class="deck-body">
+        <h3>Advanced RAG &amp; Graph RAG</h3>
+        <p>데이터 구조화·Contextual Retrieval부터 Hybrid·Reranking·Graph RAG·Agentic RAG·운영까지 검색 고도화.</p>
+        <div class="tags"><span class="tag">Contextual Retrieval</span><span class="tag">Hybrid·RRF</span><span class="tag">Reranking</span><span class="tag">Graph RAG</span><span class="tag">Agentic·라우팅</span></div>
+        <span class="open">슬라이드 열기 →</span>
+      </div>
+    </a>
+    </div>
+  </section>
+
+  <section id="notebooks">
+    <div class="sec-head">
+      <div class="eyebrow">Hands-on · 실습</div>
+      <h2>Colab 실습 노트북</h2>
+      <p>“Colab에서 열기”를 누르면 브라우저에서 바로 실행됩니다. 각 노트북 <b>첫 셀의 ‘환경 셋업’만 1회 실행</b>(Claude API 키 입력)하면 됩니다.</p>
+    </div>
+    <div class="nb-grid">
+      <div class="nb" style="--accent:#2E5AAE">
+        <span class="num">LAB 01</span>
+        <h3>RAG 평가</h3>
+        <p class="desc">베이스라인 RAG·검색/생성 지표(Hit@k·MRR·nDCG·faithfulness)·LLM-as-a-judge·position/length 편향 실험.</p>
+        <div class="acts">
+          <a class="colab" target="_blank" rel="noopener" href="https://colab.research.google.com/github/suanlab/Advanced-RAG/blob/main/colab/lab1%20RAG%20%ED%8F%89%EA%B0%80.ipynb"><svg class="ico" viewBox="0 0 24 24" fill="none"><circle cx="6.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/><circle cx="17.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/></svg>Colab에서 열기</a>
+          <a class="ghv" target="_blank" rel="noopener" href="https://github.com/suanlab/Advanced-RAG/blob/main/colab/lab1%20RAG%20%ED%8F%89%EA%B0%80.ipynb">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="nb" style="--accent:#163A8E">
+        <span class="num">LAB 02</span>
+        <h3>메타데이터·테이블 &amp; Contextual Retrieval</h3>
+        <p class="desc">메타필터·Self-Query·테이블 직렬화, 그리고 청크에 문맥을 입히는 Contextual Retrieval.</p>
+        <div class="acts">
+          <a class="colab" target="_blank" rel="noopener" href="https://colab.research.google.com/github/suanlab/Advanced-RAG/blob/main/colab/lab2%20%EB%A9%94%ED%83%80%EB%8D%B0%EC%9D%B4%ED%84%B0%C2%B7%ED%85%8C%EC%9D%B4%EB%B8%94%20%26%20Contextual%20Retrieval.ipynb"><svg class="ico" viewBox="0 0 24 24" fill="none"><circle cx="6.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/><circle cx="17.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/></svg>Colab에서 열기</a>
+          <a class="ghv" target="_blank" rel="noopener" href="https://github.com/suanlab/Advanced-RAG/blob/main/colab/lab2%20%EB%A9%94%ED%83%80%EB%8D%B0%EC%9D%B4%ED%84%B0%C2%B7%ED%85%8C%EC%9D%B4%EB%B8%94%20%26%20Contextual%20Retrieval.ipynb">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="nb" style="--accent:#3F73C7">
+        <span class="num">LAB 03</span>
+        <h3>Hybrid 검색 &amp; 쿼리 재작성·HyDE</h3>
+        <p class="desc">BM25+Dense를 RRF로 융합하는 Hybrid 검색, 쿼리 재작성·멀티쿼리·HyDE로 recall 개선.</p>
+        <div class="acts">
+          <a class="colab" target="_blank" rel="noopener" href="https://colab.research.google.com/github/suanlab/Advanced-RAG/blob/main/colab/lab3%20Hybrid%20%EA%B2%80%EC%83%89%20%26%20%EC%BF%BC%EB%A6%AC%20%EC%9E%AC%EC%9E%91%EC%84%B1%C2%B7HyDE.ipynb"><svg class="ico" viewBox="0 0 24 24" fill="none"><circle cx="6.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/><circle cx="17.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/></svg>Colab에서 열기</a>
+          <a class="ghv" target="_blank" rel="noopener" href="https://github.com/suanlab/Advanced-RAG/blob/main/colab/lab3%20Hybrid%20%EA%B2%80%EC%83%89%20%26%20%EC%BF%BC%EB%A6%AC%20%EC%9E%AC%EC%9E%91%EC%84%B1%C2%B7HyDE.ipynb">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="nb" style="--accent:#2C6F5F">
+        <span class="num">LAB 04</span>
+        <h3>Reranking</h3>
+        <p class="desc">Cross-Encoder로 2단계 정밀 재정렬, top-N/top-k·지연 트레이드오프.</p>
+        <div class="acts">
+          <a class="colab" target="_blank" rel="noopener" href="https://colab.research.google.com/github/suanlab/Advanced-RAG/blob/main/colab/lab4%20Reranking.ipynb"><svg class="ico" viewBox="0 0 24 24" fill="none"><circle cx="6.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/><circle cx="17.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/></svg>Colab에서 열기</a>
+          <a class="ghv" target="_blank" rel="noopener" href="https://github.com/suanlab/Advanced-RAG/blob/main/colab/lab4%20Reranking.ipynb">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="nb" style="--accent:#0E2A6B">
+        <span class="num">LAB 05</span>
+        <h3>Graph RAG</h3>
+        <p class="desc">지식그래프 구축·Local/Global search·중심성 분석. 금융+법률+그래프·벡터 하이브리드.</p>
+        <div class="acts">
+          <a class="colab" target="_blank" rel="noopener" href="https://colab.research.google.com/github/suanlab/Advanced-RAG/blob/main/colab/lab5%20Graph%20RAG.ipynb"><svg class="ico" viewBox="0 0 24 24" fill="none"><circle cx="6.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/><circle cx="17.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/></svg>Colab에서 열기</a>
+          <a class="ghv" target="_blank" rel="noopener" href="https://github.com/suanlab/Advanced-RAG/blob/main/colab/lab5%20Graph%20RAG.ipynb">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="nb" style="--accent:#3F73C7">
+        <span class="num">LAB 06</span>
+        <h3>Agentic RAG &amp; 쿼리 라우팅</h3>
+        <p class="desc">검색을 도구로 반복 호출하는 에이전트형 RAG(자기평가), 질문 유형→전략 라우팅.</p>
+        <div class="acts">
+          <a class="colab" target="_blank" rel="noopener" href="https://colab.research.google.com/github/suanlab/Advanced-RAG/blob/main/colab/lab6%20Agentic%20RAG%20%26%20%EC%BF%BC%EB%A6%AC%20%EB%9D%BC%EC%9A%B0%ED%8C%85.ipynb"><svg class="ico" viewBox="0 0 24 24" fill="none"><circle cx="6.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/><circle cx="17.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/></svg>Colab에서 열기</a>
+          <a class="ghv" target="_blank" rel="noopener" href="https://github.com/suanlab/Advanced-RAG/blob/main/colab/lab6%20Agentic%20RAG%20%26%20%EC%BF%BC%EB%A6%AC%20%EB%9D%BC%EC%9A%B0%ED%8C%85.ipynb">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="nb" style="--accent:#2E5AAE">
+        <span class="num">LAB 07</span>
+        <h3>통합 Capstone</h3>
+        <p class="desc">베이스라인→Contextual→Hybrid→Rerank 누적 개선을 모듈1 지표로 수치 입증.</p>
+        <div class="acts">
+          <a class="colab" target="_blank" rel="noopener" href="https://colab.research.google.com/github/suanlab/Advanced-RAG/blob/main/colab/lab7%20%ED%86%B5%ED%95%A9%20Capstone.ipynb"><svg class="ico" viewBox="0 0 24 24" fill="none"><circle cx="6.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/><circle cx="17.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/></svg>Colab에서 열기</a>
+          <a class="ghv" target="_blank" rel="noopener" href="https://github.com/suanlab/Advanced-RAG/blob/main/colab/lab7%20%ED%86%B5%ED%95%A9%20Capstone.ipynb">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="nb" style="--accent:#B96A3B">
+        <span class="num">LAB 08</span>
+        <h3>RAG 운영 모니터링</h3>
+        <p class="desc">골든셋 회귀로 버전별 점수 drift 추적, prompt caching·Batches 비용 대시보드.</p>
+        <div class="acts">
+          <a class="colab" target="_blank" rel="noopener" href="https://colab.research.google.com/github/suanlab/Advanced-RAG/blob/main/colab/lab8%20RAG%20%EC%9A%B4%EC%98%81%20%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81.ipynb"><svg class="ico" viewBox="0 0 24 24" fill="none"><circle cx="6.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/><circle cx="17.5" cy="12" r="3.2" stroke="#B96A3B" stroke-width="2"/></svg>Colab에서 열기</a>
+          <a class="ghv" target="_blank" rel="noopener" href="https://github.com/suanlab/Advanced-RAG/blob/main/colab/lab8%20RAG%20%EC%9A%B4%EC%98%81%20%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81.ipynb">GitHub ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="howto">
+    <div class="sec-head">
+      <div class="eyebrow">Get Started · 시작하기</div>
+      <h2>실습 준비 (3단계)</h2>
+    </div>
+    <div class="how">
+      <ol>
+        <li><span><b>Anthropic API Key 발급</b> — <a href="https://console.anthropic.com" target="_blank" rel="noopener" style="color:var(--blue)">console.anthropic.com</a>에서 키를 만들고 소액($5~)을 충전합니다.</span></li>
+        <li><span><b>Colab에서 열기</b> — 위 노트북의 “Colab에서 열기” 버튼을 클릭합니다(구글 로그인 필요).</span></li>
+        <li><span><b>키 입력 후 실행</b> — 노트북 맨 위 ‘환경 셋업’ 셀에서 <code>API Key</code>를 입력하고, 셀을 <b>위에서 아래로</b> 차례로 실행하세요. 실습 기본 모델은 <code>claude-sonnet-4-6</code>입니다.</span></li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brand"><img src="assets/logo_icon.svg" alt="SuanLab">SuanLab · Advanced RAG 엔지니어링 구축 전략</div>
+    <div class="small">
+      신한카드 Agentic AI 엔지니어링 과정 ·
+      <a href="https://github.com/suanlab/Advanced-RAG" target="_blank" rel="noopener">GitHub 저장소</a> ·
+      Claude API <code style="color:#fff">claude-sonnet-4-6</code>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
